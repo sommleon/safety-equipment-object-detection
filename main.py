@@ -45,9 +45,9 @@ warningSign = cv.imread('warning_sign.png')
 
 def openCapture():
     # Capture standard webcam
-    capture = cv.VideoCapture(0)
+    # capture = cv.VideoCapture(0)
     # Optional for emulating video stream
-    # capture = cv.VideoCapture('construction_video3.mp4')
+    capture = cv.VideoCapture('video_sample.mp4')
     # Resolution Width ID 3
     capture.set(cv.CAP_PROP_FRAME_WIDTH, 1280)
     # Resolution Height ID 4
