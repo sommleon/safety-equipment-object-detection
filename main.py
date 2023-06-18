@@ -14,16 +14,16 @@ fontProperties = {
 }
 
 classes = [
-    'Helm',
+    'Schutzhelm',
     'Warnweste',
-    'Kopf',
+    'Ungeschuetzt',
     'Person'
 ]
 
 boundingBoxColors = {
-    'Helm': (0, 255, 0),
+    'Schutzhelm': (0, 255, 0),
     'Warnweste': (255, 255, 255),
-    'Kopf': (0, 0, 255),
+    'Ungeschuetzt': (0, 0, 255),
     'Person': (255, 0, 0)
 }
 
@@ -33,9 +33,9 @@ frameTimes = {
 }
 
 classCounters = {
-    'Helm': 0,
+    'Schutzhelm': 0,
     'Warnweste': 0,
-    'Kopf': 0,
+    'Ungeschuetzt': 0,
     'Person': 0
 }
 
@@ -83,28 +83,28 @@ def displayHUD(frame, capture, fps):
     cv.putText(frame, 'REC', (12, 20), fontProperties['fontFace'], fontProperties['fontScale'],
                fontProperties['fontColor'], fontProperties['fontThickness'], fontProperties['fontLineType'])
     cv.circle(frame, (55, 15), 6, (0, 0, 255), -1, fontProperties['fontLineType'])
-    cv.putText(frame, f'Schutzhelm: {classCounters["Helm"]}', (10, int(capture.get(cv.CAP_PROP_FRAME_HEIGHT)) - 80),
+    cv.putText(frame, f'Schutzhelm: {classCounters["Schutzhelm"]}', (10, int(capture.get(cv.CAP_PROP_FRAME_HEIGHT)) - 80),
                fontProperties['fontFace'], fontProperties['fontScale'], fontProperties['fontColor'],
                fontProperties['fontThickness'], fontProperties['fontLineType'])
     cv.putText(frame, f'Warnweste: {classCounters["Warnweste"]}', (10, int(capture.get(cv.CAP_PROP_FRAME_HEIGHT)) - 60),
                fontProperties['fontFace'], fontProperties['fontScale'], fontProperties['fontColor'],
                fontProperties['fontThickness'], fontProperties['fontLineType'])
-    cv.putText(frame, f'Schutzlos: {classCounters["Kopf"]}', (10, int(capture.get(cv.CAP_PROP_FRAME_HEIGHT)) - 40),
+    cv.putText(frame, f'Ungeschuetzt: {classCounters["Ungeschuetzt"]}', (10, int(capture.get(cv.CAP_PROP_FRAME_HEIGHT)) - 40),
                fontProperties['fontFace'], fontProperties['fontScale'], fontProperties['fontColor'],
                fontProperties['fontThickness'], fontProperties['fontLineType'])
 
-    divisor = int(classCounters["Helm"]) + int(classCounters["Kopf"])
+    divisor = int(classCounters["Schutzhelm"]) + int(classCounters["Ungeschuetzt"])
     if divisor == 0:
         cv.putText(frame, 'Schutzpflicht: N/A', (10, int(capture.get(cv.CAP_PROP_FRAME_HEIGHT)) - 20),
                    fontProperties['fontFace'], fontProperties['fontScale'], fontProperties['fontColor'],
                    fontProperties['fontThickness'], fontProperties['fontLineType'])
     else:
-        quote = math.ceil(int(classCounters["Helm"]) / divisor * 100)
+        quote = math.ceil(int(classCounters["Schutzhelm"]) / divisor * 100)
         cv.putText(frame, f'Schutzpflicht: {quote}%', (10, int(capture.get(cv.CAP_PROP_FRAME_HEIGHT)) - 20),
                    fontProperties['fontFace'], fontProperties['fontScale'], fontProperties['fontColor'],
                    fontProperties['fontThickness'], fontProperties['fontLineType'])
 
-    if classCounters["Kopf"] >= 1:
+    if classCounters["Ungeschuetzt"] >= 1:
         # 92 Width X 143 Height
         x1 = int(capture.get(cv.CAP_PROP_FRAME_WIDTH) - 102)
         x2 = int(capture.get(cv.CAP_PROP_FRAME_WIDTH) - 10)
@@ -137,7 +137,7 @@ def main():
                     className = classes[classNumber]
                     x1, y1, x2, y2 = boundingBox.xyxy[0]
                     x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
-                    if className == "Kopf":
+                    if className == "Ungeschuetzt":
                         timer += timeElapsed
                         if timer >= 10:
                             saveSafetyViolation(frame, x1, x2, y1, y2)
